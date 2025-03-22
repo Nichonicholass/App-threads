@@ -9,7 +9,7 @@ function App() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const addCard = (newCard) => {
-    setCard((prev) => [...prev, newCard]);
+    setCard((prev) => [...prev, { ...newCard, like: 0 }]);
     setIsModalOpen(false);
   };
 
@@ -29,12 +29,27 @@ function App() {
       localStorage.setItem("cards", JSON.stringify(card));
     }
   }, [card]);
+
+  const editCard = (index) => {
+    const newCard = prompt("Edit Card", card[index].text);
+    if (newCard) {
+      setCard((prev) =>
+        prev.map((item, i) => (i === index ? { ...item, text: newCard } : item))
+      );
+    }
+  };
+  const handleLike = (index) => {
+    setCard((prev) =>
+      prev.map((item, i) =>
+        i === index ? { ...item, like: item.like + 1 } : item
+      )
+    );
+  };
+
   return (
     <>
       <h1>Threads</h1>
-      <div>
-        {/* <Card username={"asep123"} text={"lorem10 awokaowk"} /> */}
-      </div>
+      <div>{/* <Card username={"asep123"} text={"lorem10 awokaowk"} /> */}</div>
       {isModalOpen && (
         <ModalCreate onSubmit={addCard} onClose={() => setIsModalOpen(false)} />
       )}
@@ -46,6 +61,9 @@ function App() {
             username={card.username}
             text={card.text}
             onDelete={() => deleteCard(index)}
+            onEdit={() => editCard(index)}
+            number={card.like}
+            onLike={() => handleLike(index)}
           />
         ))}
       </div>

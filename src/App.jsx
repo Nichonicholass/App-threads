@@ -49,7 +49,6 @@ function App() {
   return (
     <>
       <h1>Threads</h1>
-      <div>{/* <Card username={"asep123"} text={"lorem10 awokaowk"} /> */}</div>
       {isModalOpen && (
         <ModalCreate onSubmit={addCard} onClose={() => setIsModalOpen(false)} />
       )}
